@@ -3,9 +3,8 @@
 /**
  * A proxy for api.telegram.org
  * By NimaH79
- * NimaH79.ir
+ * NimaH79.ir.
  */
-
 $scheme = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' || !empty($headers['X-Forwarded-Proto']) && $headers['X-Forwarded-Proto'] == 'https' ? 'https' : 'http';
 $uri = parse_url((preg_match('/^\w+:\/\//', $_SERVER['REQUEST_URI']) ? '' : $scheme.'://'.$_SERVER['SERVER_NAME']).$_SERVER['REQUEST_URI']);
 $_SERVER['REQUEST_URI'] = $uri['path'].(isset($uri['query']) ? '?'.$uri['query'] : '').(isset($uri['fragment']) ? '#'.$uri['fragment'] : '');
@@ -13,15 +12,13 @@ $base = rtrim(str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'])));
 $uri = parse_url((preg_match('/^\w+:\/\//', $_SERVER['REQUEST_URI']) ? '' : $scheme.'://'.$_SERVER['SERVER_NAME']).$_SERVER['REQUEST_URI']);
 $query = preg_replace('/^'.preg_quote($base, '/').'/', '', $uri['path']);
 
-if(empty($query) || $query == '/') {
+if (empty($query) || $query == '/') {
     header('Content-Type: application/json');
-    echo json_encode(array('ok' => false, 'error_code' => 404, 'description' => 'request query should not be empty'));
-}
-else {
-    if(substr($query, 0, 4) == '/') {
+    echo json_encode(['ok' => false, 'error_code' => 404, 'description' => 'request query should not be empty']);
+} else {
+    if (substr($query, 0, 4) == '/') {
         $ch = curl_init('https://api.telegram.org'.$query);
-    }
-    else {
+    } else {
         $ch = curl_init('https://api.telegram.org/'.$query);
     }
     curl_setopt($ch, CURLOPT_HEADER, true);
